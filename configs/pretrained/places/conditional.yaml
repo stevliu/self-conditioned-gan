@@ -1,0 +1,11 @@
+generator:
+  nlabels: 365
+  conditioning: embedding
+discriminator:
+  nlabels: 365
+  conditioning: mask
+training:
+  out_dir: output/pretrained/places/class_conditional
+inherit_from: configs/places/default.yaml
+pretrained:
+  model: http://selfcondgan.csail.mit.edu/weights/classcondgan_p_model.pt

@@ -1,0 +1,3 @@
+inherit_from: configs/cifar/default.yaml
+training:
+  out_dir: output/cifar/unconditional

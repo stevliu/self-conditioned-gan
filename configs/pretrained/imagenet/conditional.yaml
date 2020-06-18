@@ -1,0 +1,11 @@
+generator:
+  nlabels: 1000
+  conditioning: embedding
+discriminator:
+  nlabels: 1000
+  conditioning: mask
+inherit_from: configs/imagenet/default.yaml
+training:
+  out_dir: output/pretrained/imagenet/class_conditional
+pretrained:
+  model: http://selfcondgan.csail.mit.edu/weights/classcondgan_i_model.pt

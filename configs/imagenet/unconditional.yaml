@@ -1,0 +1,9 @@
+generator:
+  nlabels: 1
+  conditioning: unconditional
+discriminator:
+  nlabels: 1
+  conditioning: unconditional
+inherit_from: configs/imagenet/default.yaml
+training:
+  out_dir: output/imagenet/unconditional

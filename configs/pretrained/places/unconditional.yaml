@@ -1,0 +1,11 @@
+generator:
+  nlabels: 1
+  conditioning: embedding
+discriminator:
+  nlabels: 1
+  conditioning: mask
+inherit_from: configs/places/default.yaml
+training:
+  out_dir: output/pretrained/places/unconditional
+pretrained:
+  model: http://selfcondgan.csail.mit.edu/weights/uncondgan_p_model.pt

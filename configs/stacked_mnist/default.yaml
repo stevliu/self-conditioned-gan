@@ -1,0 +1,35 @@
+data:
+  type: stacked_mnist
+  train_dir: data/MNIST
+  img_size: 32
+  nlabels: 1000
+generator:
+  name: dcgan_shallow
+  nlabels: 1
+  conditioning: unconditional
+  kwargs:
+    placeholder: None
+discriminator:
+  name: dcgan_shallow
+  nlabels: 1
+  conditioning: unconditional
+  kwargs:
+    placeholder: None
+z_dist:
+  type: gauss
+  dim: 128
+clusterer:
+  name: supervised
+  nimgs: 25000
+  kwargs: 
+    placeholder: None
+training:
+  gan_type: standard
+  reg_type: none
+  reg_param: 0.
+  take_model_average: false
+  sample_nlabels: 20
+  log_every: 1000
+  backup_every: 5000
+  inception_every: 10000
+  batch_size: 64

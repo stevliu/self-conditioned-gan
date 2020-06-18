@@ -1,0 +1,9 @@
+generator:
+  nlabels: 365
+  conditioning: embedding
+discriminator:
+  nlabels: 365
+  conditioning: mask
+training:
+  out_dir: output/places/conditional
+inherit_from: configs/places/default.yaml

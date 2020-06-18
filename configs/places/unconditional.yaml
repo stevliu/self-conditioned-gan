@@ -1,0 +1,9 @@
+generator:
+  nlabels: 1
+  conditioning: embedding
+discriminator:
+  nlabels: 1
+  conditioning: mask
+inherit_from: configs/places/default.yaml
+training:
+  out_dir: output/places/unconditional

@@ -1,0 +1,9 @@
+generator:
+  nlabels: 1000
+  conditioning: embedding
+discriminator:
+  nlabels: 1000
+  conditioning: mask
+inherit_from: configs/stacked_mnist/default.yaml
+training:
+  out_dir: output/stacked_mnist/conditional

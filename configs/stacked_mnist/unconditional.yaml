@@ -1,0 +1,3 @@
+inherit_from: configs/stacked_mnist/default.yaml
+training:
+  out_dir: output/stacked_mnist/unconditional

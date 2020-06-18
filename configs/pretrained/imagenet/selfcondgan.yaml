@@ -1,0 +1,19 @@
+generator:
+  nlabels: 100
+  conditioning: embedding
+discriminator:
+  nlabels: 100
+  conditioning: mask
+clusterer:
+  name: selfcondgan
+  nimgs: 50000
+  kwargs: 
+    k_value: 100
+inherit_from: configs/imagenet/default.yaml
+training:
+  out_dir: output/pretrained/imagenet/selfcondgan
+  recluster_every: 75000
+  reg_param: 0.1
+pretrained:
+  model: http://selfcondgan.csail.mit.edu/weights/selfcondgan_i_model.pt
+  clusterer: http://selfcondgan.csail.mit.edu/weights/selfcondgan_i_clusterer.pkl

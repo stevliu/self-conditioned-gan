@@ -1,0 +1,10 @@
+generator:
+  nlabels: 1000
+  conditioning: embedding
+discriminator:
+  nlabels: 1000
+  conditioning: mask
+inherit_from: configs/imagenet/default.yaml
+training:
+  out_dir: output/imagenet/conditional
+  

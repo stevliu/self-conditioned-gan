@@ -1,0 +1,18 @@
+generator:
+  nlabels: 100
+  conditioning: embedding
+discriminator:
+  nlabels: 100
+  conditioning: mask
+clusterer:
+  name: selfcondgan
+  nimgs: 50000
+  kwargs: 
+    k_value: 100
+inherit_from: configs/places/default.yaml
+training:
+  out_dir: output/pretrained/places/selfcondgan
+  reg_param: 0.1
+pretrained:
+  model: http://selfcondgan.csail.mit.edu/weights/selfcondgan_p_model.pt
+  clusterer: http://selfcondgan.csail.mit.edu/weights/selfcondgan_p_clusterer.pkl

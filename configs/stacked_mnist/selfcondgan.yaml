@@ -1,0 +1,14 @@
+generator:
+  nlabels: 100
+  conditioning: embedding
+discriminator:
+  nlabels: 100
+  conditioning: mask
+clusterer:
+  name: selfcondgan
+  kwargs: 
+    k_value: 100
+inherit_from: configs/stacked_mnist/default.yaml
+training:
+  out_dir: output/stacked_mnist/selfcondgan
+  recluster_every: 25000
