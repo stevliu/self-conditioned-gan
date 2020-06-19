@@ -10,7 +10,12 @@
 [Antonio Torralba](http://web.mit.edu/torralba/www/) <br>
 in CVPR 2020.
 
-<!-- This is the open-source code release for the paper **Diverse Image Generation with Self-Conditioned GANs**. -->
+<img src="http://selfcondgan.csail.mit.edu/img/teasers/teaser.png" width="800px"/>
+
+
+Our proposed self-conditioned GAN model learns to perform clustering and image synthesis simultaneously. The model training
+requires no manual annotation of object classes. Here, we visualize several discovered clusters for both Places365 (top) and ImageNet
+(bottom). For each cluster, we show both real images and the generated samples conditioned on the cluster index.
 
 ## Getting Started
 
