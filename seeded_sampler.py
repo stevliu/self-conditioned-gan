@@ -1,8 +1,10 @@
 ''' Samples from a (class-conditional) GAN, so that the samples can be reproduced '''
 
-import argparse, os, pickle, random, copy
+import os
+import pickle
+import random
+import copy
 
-import numpy as np
 import torch
 from torch import nn
 
@@ -42,10 +44,10 @@ class SeededSampler():
 
     def sample(self, nimgs):
         '''
-        samples an image using the generator, with z drawn from isotropic gaussian, and y drawn from self.yz_dist. 
-        For baseline methods, y doesn't matter because y is ignored in the input 
-        yz_dist is the empirical label distribution for the clustered gans. 
-        
+        samples an image using the generator, with z drawn from isotropic gaussian, and y drawn from self.yz_dist.
+        For baseline methods, y doesn't matter because y is ignored in the input
+        yz_dist is the empirical label distribution for the clustered gans.
+
         returns the image, and the integer seed used to generate it. generated sample is in [-1, 1]
         '''
         self.generator.eval()
@@ -103,12 +105,13 @@ class SeededSampler():
             generator_test = generator
 
         checkpoint_io.register_modules(generator=generator)
-        
+
         try:
             it = checkpoint_io.load(model_name, pretrained=self.pretrained)
             assert (it != -1)
         except Exception as e:
             # try again without data parallel
+            print(e)
             checkpoint_io.register_modules(generator=generator.module)
             checkpoint_io.register_modules(generator_test=generator_test.module)
             it = checkpoint_io.load(model_name, pretrained=self.pretrained)
@@ -140,8 +143,8 @@ class SeededSampler():
                 print("Sampling with uniform distribution over", clusterer.k, "labels")
                 probs = [1. / clusterer.k for _ in range(clusterer.k)]
         else:
-            # if it's supervised, then sample uniformly over all classes. 
-            # this might not be the right thing to do, since datasets are usually imbalanced. 
+            # if it's supervised, then sample uniformly over all classes.
+            # this might not be the right thing to do, since datasets are usually imbalanced.
             print("Sampling with uniform distribution over", self.nlabels,
                   "labels")
             probs = [1. / self.nlabels for _ in range(self.nlabels)]

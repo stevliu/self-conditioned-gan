@@ -1,5 +1,6 @@
 import argparse
-import os, shutil
+import os
+import shutil
 import torch
 import torchvision
 
@@ -21,6 +22,7 @@ args = parser.parse_args()
 
 config = load_config(args.config, 'configs/default.yaml')
 out_dir = config['training']['out_dir']
+
 
 def main():
     checkpoint_dir = os.path.join(out_dir, 'chkpts')
@@ -47,7 +49,7 @@ def main():
                             model_path=model_path,
                             clusterer_path=os.path.join(checkpoint_dir, f'clusterer{most_recent}.pkl'),
                             pretrained=config['pretrained'])
-    
+
     if args.show_clusters:
         clusters = [[] for _ in range(config['generator']['nlabels'])]
         train_dataset, _ = get_dataset(
@@ -72,7 +74,7 @@ def main():
 
             for i, yi in enumerate(y_pred):
                 clusters[yi].append(x_real[i].cpu())
-            
+
             # don't generate too many, we're only visualizing 20 per cluster
             if batch_num * config['training']['batch_size'] >= 10000:
                 break
@@ -100,7 +102,9 @@ def main():
         torchvision.utils.save_image(generated * 0.5 + 0.5,
                                      os.path.join(cluster_path, f'{i}_gen.png'),
                                      nrow=nrows)
-                                        
+
     print('Clusters/samples can be visualized under', cluster_path)
+
+
 if __name__ == '__main__':
     main()

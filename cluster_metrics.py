@@ -1,4 +1,5 @@
-import argparse, os
+import argparse
+import os
 from tqdm import tqdm
 
 import torch
@@ -10,7 +11,6 @@ from gan_training.inputs import get_dataset
 from gan_training.checkpoints import CheckpointIO
 from gan_training.config import load_config
 from gan_training.metrics.clustering_metrics import (nmi, purity_score)
-from seeded_sampler import SeededSampler
 
 torch.backends.cudnn.benchmark = True
 
@@ -35,9 +35,9 @@ def main():
         name = 'stacked_mnist'
     else:
         name = 'image'
-    
+
     if os.path.exists(os.path.join(out_dir, 'cluster_preds.npz')):
-        #if we've already computed assignments, load them and move on
+        # if we've already computed assignments, load them and move on
         with np.load(os.path.join(out_dir, 'cluster_preds.npz')) as f:
             y_reals = f['y_reals']
             y_preds = f['y_preds']
@@ -57,7 +57,7 @@ def main():
             drop_last=True)
 
         checkpoint_io = CheckpointIO(checkpoint_dir=checkpoint_dir)
-        
+
         print('Loading clusterer:')
         most_recent = utils.get_most_recent(checkpoint_dir, 'model') if args.model_it is None else args.model_it
         clusterer = checkpoint_io.load_clusterer(most_recent, load_samples=False, pretrained=config['pretrained'])
@@ -80,7 +80,7 @@ def main():
 
     if args.random:
         y_preds = np.random.randint(0, 100, size=y_reals.shape)
-        
+
     nmi_score = nmi(y_preds, y_reals)
     purity = purity_score(y_preds, y_reals)
     print('nmi', nmi_score, 'purity', purity)

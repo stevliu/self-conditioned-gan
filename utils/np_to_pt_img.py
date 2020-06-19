@@ -1,5 +1,6 @@
 import torch
 
+
 def np_to_pt(x):
     ''' permutes the appropriate channels to turn numpy formatted images to pt formatted images. does NOT renormalize '''
     x = torch.from_numpy(x)
@@ -9,4 +10,3 @@ def np_to_pt(x):
         return x.permute(2, 0, 1)
     else:
         raise NotImplementedError
-    

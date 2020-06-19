@@ -1,4 +1,6 @@
-import argparse, os, json
+import argparse
+import os
+import json
 from tqdm import tqdm
 
 import numpy as np
@@ -10,7 +12,7 @@ from seeded_sampler import SeededSampler
 parser = argparse.ArgumentParser('Computes numbers used in paper and caches them to a result files. Examples include FID, IS, reverse-KL, # modes, FSD, cluster NMI, Purity.')
 parser.add_argument('paths', nargs='+', type=str, help='list of configs for each experiment')
 parser.add_argument('--it', type=int, default=-1, help='If set, computes numbers only for that iteration')
-parser.add_argument('--every', type=int, default=-1, help='skips some checkpoints and only computes those whose iteration number are divisible by every') 
+parser.add_argument('--every', type=int, default=-1, help='skips some checkpoints and only computes those whose iteration number are divisible by every')
 parser.add_argument('--fid', action='store_true', help='compute FID metric')
 parser.add_argument('--inception', action='store_true', help='compute IS metric')
 parser.add_argument('--modes', action='store_true', help='compute # modes and reverse-KL metric')
@@ -31,6 +33,7 @@ dataset_to_img = {
     'places': 'output/places_gt_imgs.npz',
     'imagenet': 'output/imagenet_gt_imgs.npz'}
 
+
 def load_results(results_dir):
     results = []
     for results_file in ['fid_results.json', 'is_results.json', 'kl_results.json', 'nmodes_results.json', 'fsd_results.json', 'cluster_metrics.json']:
@@ -42,15 +45,18 @@ def load_results(results_dir):
             results.append(json.load(f))
     return results
 
+
 def get_dataset_from_path(path):
     for name in datasets:
         if name in path:
             print('Inferred dataset:', name)
             return name
 
+
 def pt_to_np(imgs):
     '''normalizes pytorch image in [-1, 1] to [0, 255]'''
     return (imgs.permute(0, 2, 3, 1).mul_(0.5).add_(0.5).mul_(255)).clamp_(0, 255).numpy()
+
 
 def sample(sampler):
     with torch.no_grad():
@@ -61,6 +67,7 @@ def sample(sampler):
             samples.extend(x_real)
         samples = torch.stack(samples[:N], dim=0)
         return pt_to_np(samples)
+
 
 root = './'
 
@@ -85,8 +92,9 @@ while len(dirs) > 0:
             fid_results, is_results, kl_results, nmodes_results, fsd_results, cluster_results = load_results(results_dir)
 
             checkpoint_files = os.listdir(checkpoint_dir) if os.path.exists(checkpoint_dir) else []
-            if config['pretrained'] != {}: checkpoint_files = checkpoint_files + ['pretrained']
-            
+            if config['pretrained'] != {}:
+                checkpoint_files = checkpoint_files + ['pretrained']
+
             for checkpoint in checkpoint_files:
                 if (checkpoint.endswith('.pt') and checkpoint != 'model.pt') or checkpoint == 'pretrained':
                     print('Computing for', checkpoint)
@@ -96,23 +104,29 @@ while len(dirs) > 0:
                             it = int(checkpoint.split('model_')[1].split('.pt')[0])
                         else:
                             continue
-                        if args.every != 0 and it % args.every != 0: continue
+                        if args.every != 0 and it % args.every != 0:
+                            continue
                         # iteration 0 is often useless, skip it
-                        if it == 0 or args.it != -1 and it != args.it: continue
+                        if it == 0 or args.it != -1 and it != args.it:
+                            continue
                     elif checkpoint == 'pretrained':
                         it = 'pretrained'
                     it = str(it)
-                    
+
                     clusterer_path = os.path.join(root, checkpoint_dir, f'clusterer{it}.pkl')
                     #  don't save samples for each iteration for disk space
-                    samples_path = os.path.join(outdir, 'results', 'samples.npz') 
+                    samples_path = os.path.join(outdir, 'results', 'samples.npz')
 
-                    targets = [] 
-                    if args.inception: targets = targets + [is_results] 
-                    if args.fid: targets = targets + [fid_results] 
-                    if args.modes: targets = targets + [kl_results, nmodes_results]
-                    if args.fsd: targets = targets + [fsd_results]
-                    
+                    targets = []
+                    if args.inception:
+                        targets = targets + [is_results]
+                    if args.fid:
+                        targets = targets + [fid_results]
+                    if args.modes:
+                        targets = targets + [kl_results, nmodes_results]
+                    if args.fsd:
+                        targets = targets + [fsd_results]
+
                     if all([it in result for result in targets]):
                         print('Already generated', it, path)
                     else:
@@ -123,7 +137,7 @@ while len(dirs) > 0:
                         samples = sample(sampler)
                         dataset_name = get_dataset_from_path(path)
                         np.savez(samples_path, fake=samples, real=dataset_name)
-                    
+
                     arguments = f'--samples {samples_path} --it {it} --results_dir {results_dir}'
                     if args.fid and it not in fid_results:
                         os.system(f'CUDA_VISIBLE_DEVICES={device} python gan_training/metrics/fid.py {arguments}')

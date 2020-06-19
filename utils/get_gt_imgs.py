@@ -1,10 +1,12 @@
-import os, argparse
+import os
+import argparse
 from tqdm import tqdm
 from PIL import Image
 import torch
 from torchvision import transforms, datasets
 import numpy as np
 import random
+
 
 def get_images(root, N):
     if False and os.path.exists(root + '.txt'):
@@ -16,15 +18,18 @@ def get_images(root, N):
         all_files = []
         for i, (dp, dn, fn) in enumerate(os.walk(os.path.expanduser(root))):
             for j, f in enumerate(fn):
-                if j >= 1000: break     # don't get whole dataset, just get enough images per class
+                if j >= 1000:
+                    break     # don't get whole dataset, just get enough images per class
                 if f.endswith(('.png', '.webp', 'jpg', '.JPEG')):
                     all_files.append(os.path.join(dp, f))
         random.shuffle(all_files)
         return all_files
 
+
 def pt_to_np(imgs):
     '''normalizes pytorch image in [-1, 1] to [0, 255]'''
     return (imgs.permute(0, 2, 3, 1).mul_(0.5).add_(0.5).mul_(255)).clamp_(0, 255).numpy()
+
 
 def get_transform(size):
     return transforms.Compose([
@@ -33,6 +38,7 @@ def get_transform(size):
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
+
 
 def get_gt_samples(dataset, nimgs=50000):
     if dataset != 'cifar':
@@ -66,7 +72,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     os.makedirs('output', exist_ok=True)
-    
+
     if args.cifar:
         cifar_samples = get_gt_samples('cifar', nimgs=50000)
         np.savez('output/cifar_gt_imgs.npz', fake=cifar_samples, real=cifar_samples)

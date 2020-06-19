@@ -1,12 +1,12 @@
 # Diverse Image Generation via Self-Conditioned GANs
 
-### [Project page](http://selfcondgan.csail.mit.edu/) |   [Paper](http://selfcondgan.csail.mit.edu/preprint.pdf) 
+### [Project page](http://selfcondgan.csail.mit.edu/) |   [Paper](http://selfcondgan.csail.mit.edu/preprint.pdf)
 
 **Diverse Image Generation via Self-Conditioned GANs** <br>
-[Steven Liu](http://people.csail.mit.edu/stevenliu/), 
-[Tongzhou Wang](https://ssnl.github.io/), 
-[David Bau](http://people.csail.mit.edu/davidbau/home/), 
-[Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/), 
+[Steven Liu](http://people.csail.mit.edu/stevenliu/),
+[Tongzhou Wang](https://ssnl.github.io/),
+[David Bau](http://people.csail.mit.edu/davidbau/home/),
+[Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/),
 [Antonio Torralba](http://web.mit.edu/torralba/www/) <br>
 in CVPR 2020.
 
@@ -42,19 +42,19 @@ python train.py configs/cifar/selfcondgan.yaml
 ```bash
 python visualize_clusters.py configs/cifar/selfcondgan.yaml --show_clusters
 ```
-The samples and clusters will be saved to `output/cifar/selfcondgan/clusters`. If this directory lies on an Apache server, you can open the url to `output/cifar/selfcondgan/clusters/+lightbox.html` in the browser and visualize all samples and clusters in one webpage. 
+The samples and clusters will be saved to `output/cifar/selfcondgan/clusters`. If this directory lies on an Apache server, you can open the URL to `output/cifar/selfcondgan/clusters/+lightbox.html` in the browser and visualize all samples and clusters in one webpage.
 
 - Evaluate the model's FID:
-You will need to first gather a set of ground truth train set images to compute metrics against. 
+You will need to first gather a set of ground truth train set images to compute metrics against.
 ```bash
 python utils/get_gt_imgs.py --cifar
 python metrics.py configs/cifar/selfcondgan.yaml --fid --every -1
 ```
-You can also evaluate with other metrics by appending additional flags, such as Inception Score (`--inception`), number of covered modes + reverse-KL divergence (`--modes`), and cluster metrics (`--cluster_metrics`).
+You can also evaluate with other metrics by appending additional flags, such as Inception Score (`--inception`), the number of covered modes + reverse-KL divergence (`--modes`), and cluster metrics (`--cluster_metrics`).
 
 ## Pretrained Models
 
-You can load and evaluate pretrained models on ImageNet and Places. If you have access to ImageNet or Places directories, first fill in paths to your ImageNet and/or Places dataset directories in `configs/imagenet/default.yaml` and `configs/places/default.yaml` respectively. You can use the following config files with the evaluation scripts, and the code will automatically download the appropriate models. 
+You can load and evaluate pretrained models on ImageNet and Places. If you have access to ImageNet or Places directories, first fill in paths to your ImageNet and/or Places dataset directories in `configs/imagenet/default.yaml` and `configs/places/default.yaml` respectively. You can use the following config files with the evaluation scripts, and the code will automatically download the appropriate models.
 
 ```bash
 configs/pretrained/imagenet/selfcondgan.yaml
@@ -70,32 +70,32 @@ configs/pretrained/places/baseline.yaml
 ## Evaluation
 ### Visualizations
 
-To visualize generated samples and inferred clusters, run 
+To visualize generated samples and inferred clusters, run
 ```bash
-python visualize_clusters.py config-file 
+python visualize_clusters.py config-file
 ```
-You can the flag `--show_clusters` to also visualize the real inferred clusters, but this requires that you have a path to training set images. 
+You can set the flag `--show_clusters` to also visualize the real inferred clusters, but this requires that you have a path to training set images.
 
 ### Metrics
-To obtain generation metrics, fill in paths to your ImageNet and/or Places dataset directories in `utils/get_gt_imgs.py` and then run 
+To obtain generation metrics, fill in paths to your ImageNet or Places dataset directories in `utils/get_gt_imgs.py` and then run
 ```bash
 python utils/get_gt_imgs.py --imagenet --places
 ```
-to precompute batches of GT images to compute FID/FSD with. 
+to precompute batches of GT images for FID/FSD evaluation.
 
-Then, you can use 
+Then, you can use
 ```bash
 python metrics.py config-file
-``` 
-with the appropriate flags compute the FID (`--fid`), FSD (`--fsd`), IS (`--inception`), number of modes covered/ reverse-KL divergence (`--modes`) and clustering metrics (`--cluster_metrics`) for each of the checkpoints. 
+```
+with the appropriate flags compute the FID (`--fid`), FSD (`--fsd`), IS (`--inception`), number of modes covered/ reverse-KL divergence (`--modes`) and clustering metrics (`--cluster_metrics`) for each of the checkpoints.
 
 ## Training models
-To train a model, set up a configuration file (examples in `/configs`), and run 
-```bash 
+To train a model, set up a configuration file (examples in `/configs`), and run
+```bash
 python train.py config-file
 ```
 
-An example config of self-conditioned GAN on ImageNet is `config/imagenet/selfcondgan.yaml` and on Places is `config/places/selfcondgan.yaml`. 
+An example config of self-conditioned GAN on ImageNet is `config/imagenet/selfcondgan.yaml` and on Places is `config/places/selfcondgan.yaml`.
 
 Some models may be too large to fit on one GPU, so you may want to add `--devices DEVICE_NUMBERS` as an additional flag to do multi GPU training.
 
@@ -111,13 +111,13 @@ You can test several other configurations via the command line arguments.
 
 
 ## Acknowledgments
-This code is heavily based on the [GAN-stability](https://github.com/LMescheder/GAN_stability) code base. 
-Our FSD code is taken from the [GANseeing](https://github.com/davidbau/ganseeing) work. 
-To compute inception score, we use the code provided from [Shichang Tang](https://github.com/tsc2017/Inception-Score.git). 
-To compute FID, we use code the provided from [TTUR](https://github.com/bioinf-jku/TTUR).
-We also use pretrained classifiers given by the [pytorch-playground](https://github.com/aaron-xichen/pytorch-playground). 
+This code is heavily based on the [GAN-stability](https://github.com/LMescheder/GAN_stability) code base.
+Our FSD code is taken from the [GANseeing](https://github.com/davidbau/ganseeing) work.
+To compute inception score, we use the code provided from [Shichang Tang](https://github.com/tsc2017/Inception-Score.git).
+To compute FID, we use the code provided from [TTUR](https://github.com/bioinf-jku/TTUR).
+We also use pretrained classifiers given by the [pytorch-playground](https://github.com/aaron-xichen/pytorch-playground).
 
-We thank all authors for their useful code. 
+We thank all the authors for their useful code.
 
 ## Citation
 To cite this work, please use

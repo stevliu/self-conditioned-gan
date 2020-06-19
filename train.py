@@ -1,8 +1,9 @@
 import argparse
-import os, copy, pprint
+import os
+import copy
+import pprint
 from os import path
 
-import pickle
 import torch
 import numpy as np
 from torch import nn
@@ -54,7 +55,6 @@ def main():
     sample_nlabels = min(nlabels, sample_nlabels)
 
     checkpoint_dir = path.join(out_dir, 'chkpts')
-    nepochs = args.nepochs
 
     # Create missing directories
     if not path.exists(out_dir):
@@ -242,7 +242,8 @@ def main():
                 checkpoint_io.save_clusterer(clusterer, int(it))
                 logger.save_stats('stats_%08d.p' % it)
 
-                if it > 0: checkpoint_io.save('model.pt', it=it)
+                if it > 0:
+                    checkpoint_io.save('model.pt', it=it)
 
 
 if __name__ == '__main__':
