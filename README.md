@@ -1,6 +1,6 @@
 # Diverse Image Generation via Self-Conditioned GANs
 
-### [Project page](http://selfcondgan.csail.mit.edu/) |   [Paper](http://selfcondgan.csail.mit.edu/preprint.pdf)
+#### [Project](http://selfcondgan.csail.mit.edu/) |   [Paper](http://selfcondgan.csail.mit.edu/preprint.pdf)
 
 **Diverse Image Generation via Self-Conditioned GANs** <br>
 [Steven Liu](http://people.csail.mit.edu/stevenliu/),
@@ -8,6 +8,7 @@
 [David Bau](http://people.csail.mit.edu/davidbau/home/),
 [Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/),
 [Antonio Torralba](http://web.mit.edu/torralba/www/) <br>
+MIT, Adobe Research<br>
 in CVPR 2020.
 
 ![Teaser](images/teaser.png)
@@ -120,7 +121,7 @@ We also use pretrained classifiers given by the [pytorch-playground](https://git
 We thank all the authors for their useful code.
 
 ## Citation
-To cite this work, please use
+If you use this code for your research, please cite the following work.
 ```
 @inproceedings{liu2020selfconditioned,
  title={Diverse Image Generation via Self-Conditioned GANs},
